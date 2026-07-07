@@ -1,7 +1,6 @@
 package com.github.estrelas_aprendiz.praticasfase03.carregamento_rapido.produto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.estrelas_aprendiz.praticasfase03.carregamento_rapido.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
