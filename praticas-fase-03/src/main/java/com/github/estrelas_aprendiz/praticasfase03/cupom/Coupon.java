@@ -1,4 +1,4 @@
-package com.github.estrelas_aprendiz.praticasfase03;
+package com.github.estrelas_aprendiz.praticasfase03.cupom;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

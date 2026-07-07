@@ -1,8 +1,8 @@
 package com.github.estrelas_aprendiz.praticasfase03;
 
+import com.github.estrelas_aprendiz.praticasfase03.cupom.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ class CartCalculatorTest {
 
         Coupon expiredCoupon = new Coupon(
                 "PROMO10",
-                CouponType.Fixed,
+                CouponType.FIXED,
                 new BigDecimal("10.00"),
                 validDate.minusDays(1), //expirado
                 null
@@ -37,7 +37,7 @@ class CartCalculatorTest {
 
         Coupon bigCoupon = new Coupon(
                 "PROMO50",
-                CouponType.Fixed,
+                CouponType.FIXED,
                 new BigDecimal("50.00"),
                 validDate.plusDays(5), // válido
                 null
@@ -54,7 +54,7 @@ class CartCalculatorTest {
 
         Coupon percentageCoupon = new Coupon(
                 "PROMO15",
-                CouponType.Percentage,
+                CouponType.PERTENTAGE,
                 new BigDecimal("15.00"), // 15% de desconto
                 validDate.plusDays(5), // válido
                 null
@@ -71,7 +71,7 @@ class CartCalculatorTest {
 
         Coupon coupon = new Coupon(
                 "MIN150",
-                CouponType.Fixed,
+                CouponType.FIXED,
                 new BigDecimal("20.00"),
                 validDate.plusDays(5),
                 new BigDecimal("150.00")
