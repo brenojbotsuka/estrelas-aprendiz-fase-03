@@ -1,4 +1,4 @@
-package com.github.estrelas_aprendiz.praticasfase03;
+package com.github.estrelas_aprendiz.praticasfase03.cupom;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,11 +30,11 @@ public class CartCalculator {
 
         // 2. Calcular o desconto por tipo (Substituído 'coupon' por 'cupon' e 'subtotal' corrigido)
         BigDecimal discount = BigDecimal.ZERO;
-        if (coupon.type() == CouponType.Percentage) {
+        if (coupon.type() == CouponType.PERTENTAGE) {
             // Cenário 1.3: Cupom de Porcentagem
             BigDecimal percentage = coupon.value().divide(BigDecimal.valueOf(100));
             discount = subtotal.multiply(percentage);
-        } else if (coupon.type() == CouponType.Fixed) {
+        } else if (coupon.type() == CouponType.FIXED) {
             // Cupom de Valor Fixo
             discount = coupon.value();
         }
