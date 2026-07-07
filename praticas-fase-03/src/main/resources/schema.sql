@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS coupon(
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(50) NOT NULL UNIQUE,
+  coupon_type VARCHAR(20) NOT NULL,
+  coupon_value DECIMAL(10,2) NOT NULL,
+  expiration_date TIMESTAMP NOT NULL,
+  min_value DECIMAL(10,2),
+  active BOOLEAN NOT NULL
+);
