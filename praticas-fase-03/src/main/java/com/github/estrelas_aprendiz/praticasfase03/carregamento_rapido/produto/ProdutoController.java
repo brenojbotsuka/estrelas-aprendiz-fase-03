@@ -15,7 +15,6 @@ public class ProdutoController {
 
     private final ProdutoService produtoService;
 
-
     @GetMapping
     public ResponseEntity<List<ProdutoResponse>> listarProdutos() throws Exception {
         List<ProdutoResponse> produtos = produtoService.listarProdutos();
