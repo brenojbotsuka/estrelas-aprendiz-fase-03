@@ -16,7 +16,7 @@ class CartCalculatorTest {
     @Test
     @DisplayName("Cenário 1.1: Deve recusar cupom expirado")
     void deRecusarCupomExpirado() {
-        List<CartItem> items = List.of(new CartItem(new BigDecimal("100.00"), 1));
+        List<Coupon.CartItem> items = List.of(new Coupon.CartItem(new BigDecimal("100.00"), 1));
 
         Coupon expiredCoupon = new Coupon(
                 "PROMO10",
@@ -33,7 +33,7 @@ class CartCalculatorTest {
     @Test
     @DisplayName("Cenário 1.2: Cupom fixo maior que o carrinho não deve gerar total negativo")
     void cupomFixoMaiorQueCarrinhoNaoDeveGerarTotalNegativo(){
-        List<CartItem> items = List.of(new CartItem(new BigDecimal("30.00"), 1));
+        List<Coupon.CartItem> items = List.of(new Coupon.CartItem(new BigDecimal("30.00"), 1));
 
         Coupon bigCoupon = new Coupon(
                 "PROMO50",
@@ -50,11 +50,11 @@ class CartCalculatorTest {
     @Test
     @DisplayName("Cenário 1.3: Cupom de porcentagem deve aplicar desconto corretamente")
     void cupomDePorcentagemDeveAplicarDescontoCorretamente() {
-        List<CartItem> items = List.of(new CartItem(new BigDecimal("100.00"), 2));
+        List<Coupon.CartItem> items = List.of(new Coupon.CartItem(new BigDecimal("100.00"), 2));
 
         Coupon percentageCoupon = new Coupon(
                 "PROMO15",
-                CouponType.PERTENTAGE,
+                CouponType.PERCENTAGE,
                 new BigDecimal("15.00"), // 15% de desconto
                 validDate.plusDays(5), // válido
                 null
@@ -67,7 +67,7 @@ class CartCalculatorTest {
     @Test
     @DisplayName("Cenário 1.4: Cupom com valor mínimo não atingido deve ser recusado")
     void cupomComValorMinimoNaoAtingidoDeveSerRecusado(){
-        List<CartItem> items = List.of(new CartItem(new BigDecimal("120.00"), 1));
+        List<Coupon.CartItem> items = List.of(new Coupon.CartItem(new BigDecimal("120.00"), 1));
 
         Coupon coupon = new Coupon(
                 "MIN150",

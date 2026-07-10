@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.github.estrelas_aprendiz.praticasfase03.cupom.CouponType;
 
 @Service
 public class OrderService {
@@ -17,18 +18,20 @@ public class OrderService {
         this.logisticsClient = logisticsClient;
     }
 
-    public CartFinalResponse calculateCart(List<CartItem> items, String couponCode, String cep) {
+
+    // 1. CORREÇÃO DA ASSINATURA: Mudado de List<Coupon.CartItem> para List<CartItem>
+    public CartFinalResponse calculateCart(List<Coupon.CartItem> items, String couponCode, String cep) {
         // Cenário 2.1: Validação e busca no banco de dados
         Coupon domainCoupon = null;
+
         if (couponCode != null && !couponCode.isBlank()) {
             CouponEntity entity = couponRepository.findByCodeAndActiveTrue(couponCode)
                     .orElseThrow(() -> new IllegalArgumentException("Cupom inválido ou inativo"));
 
-            // Mapeia entidade de banco para o record de domínio da Task 1
             domainCoupon = new Coupon(
                     entity.getCode(),
                     CouponType.valueOf(entity.getType().toUpperCase().trim()),
-                    entity.getMinValue(),
+                    entity.getValue(), // O valor do desconto do cupom
                     entity.getExpirationDate(),
                     entity.getMinValue()
             );

@@ -1,5 +1,7 @@
 package com.github.estrelas_aprendiz.praticasfase03.frete;
-import com.github.estrelas_aprendiz.praticasfase03.cupom.CartItem;
+import com.github.estrelas_aprendiz.praticasfase03.cupom.CartCalculator;
+import com.github.estrelas_aprendiz.praticasfase03.cupom.Coupon;
+import com.github.estrelas_aprendiz.praticasfase03.cupom.CouponEntity;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +37,7 @@ class OrderServiceTest {
     @DisplayName("2.1 - deve validar cupom existente e ativo no banco")
     void validarCupomExistenteEAtivo() {
         // GARANTIA: Salva o cupom fisicamente no banco H2 antes de rodar a consulta do serviço
-        CouponEntity cupomValido = new CouponEntity();
+      CouponEntity cupomValido = new CouponEntity();
         cupomValido.setCode("PROMO2026");
         cupomValido.setType("PERCENTAGE");
         cupomValido.setValue(new BigDecimal("20.00"));
@@ -45,9 +47,7 @@ class OrderServiceTest {
 
         couponRepository.save(cupomValido); // Insere direto na memória do H2
 
-        List<CartItem> items = List.of(new CartItem(new BigDecimal("100.00"), 1));
-
-        // Executa o método
+        List<Coupon.CartItem> items = List.of(new Coupon.CartItem(new BigDecimal("100.00"), 1));
         CartFinalResponse result = orderService.calculateCart(items, "PROMO2026", "01001-000");
 
         assertNotNull(result);
@@ -64,7 +64,7 @@ class OrderServiceTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody("{\"shippingCost\": 15.00}")));
 
-        List<CartItem> items = List.of(new CartItem(new BigDecimal("100.00"), 1));
+        List<Coupon.CartItem> items = List.of(new Coupon.CartItem(new BigDecimal("100.00"), 1));
 
         com.github.estrelas_aprendiz.praticasfase03.frete.CartFinalResponse result = orderService.calculateCart(items, null, "01001-000");
 
@@ -78,7 +78,7 @@ class OrderServiceTest {
         stubFor(get(urlEqualTo("/api/v1/shipping/99999-999"))
                 .willReturn(aResponse().withStatus(500)));
 
-        List<CartItem> items = List.of(new CartItem(new BigDecimal("100.00"), 1));
+        List<Coupon.CartItem> items = List.of(new Coupon.CartItem(new BigDecimal("100.00"), 1));
 
         com.github.estrelas_aprendiz.praticasfase03.frete.CartFinalResponse result = orderService.calculateCart(items, null, "99999-999");
 

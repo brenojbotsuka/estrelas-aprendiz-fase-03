@@ -1,6 +1,6 @@
 package com.github.estrelas_aprendiz.praticasfase03.frete;
 
-import com.github.estrelas_aprendiz.praticasfase03.cupom.CartItem;
+import com.github.estrelas_aprendiz.praticasfase03.cupom.Coupon;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -22,4 +22,4 @@ public class CartController {
     }
 }
 
-record CartRequest(List<CartItem> items, String couponCode, String cep) {}
+record CartRequest(List<Coupon.CartItem> items, String couponCode, String cep) {}

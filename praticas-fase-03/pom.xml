@@ -7,8 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.4</version>
-		<relativePath/>
-	</parent>
+		<relativePath/> </parent>
 
 	<groupId>com.github.estrelas-aprendiz</groupId>
 	<artifactId>praticas-fase-03</artifactId>
@@ -34,9 +33,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -51,35 +50,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock-standalone</artifactId>
 			<version>3.3.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-	</dependencies> <build>
-	<plugins>
-		<plugin>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-		</plugin>
-	</plugins>
-</build>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.36</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -87,6 +68,27 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

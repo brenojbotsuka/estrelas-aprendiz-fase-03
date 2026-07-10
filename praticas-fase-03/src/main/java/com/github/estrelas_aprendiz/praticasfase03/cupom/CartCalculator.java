@@ -1,15 +1,16 @@
 package com.github.estrelas_aprendiz.praticasfase03.cupom;
 
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CartCalculator {
 
+    // CORREÇÃO: Mudado de List<Coupon.CartItem> para List<CartItem> limpo
+    public static CartCalculationResult calculate(List<Coupon.CartItem> items, Coupon coupon, LocalDateTime now) {
 
-    public static CartCalculationResult calculate(List<CartItem> items, Coupon coupon, LocalDateTime now) {
-
-        // 1. Calcular subtotal (Ajustado 'subTotal' para 'subtotal' minúsculo para bater com o resto do código)
+        // 1. Calcular subtotal
         BigDecimal subtotal = items.stream()
                 .map(item -> item.price().multiply(BigDecimal.valueOf(item.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -18,19 +19,21 @@ public class CartCalculator {
             return new CartCalculationResult(subtotal, BigDecimal.ZERO, subtotal);
         }
 
-        // Cenário 1.1
+        // Cenário 1.1: Validação de data de expiração
         if (coupon.expirationDate().isBefore(now)) {
             throw new IllegalArgumentException("Cupom expirado");
         }
 
-        // Cenário 1.4 (Garantido que usa cupon.minValue() e compara com subtotal)
+        // Cenário 1.4: Validação de valor mínimo
         if (coupon.minValue() != null && subtotal.compareTo(coupon.minValue()) < 0) {
             throw new IllegalArgumentException("Valor mínimo do pedido não atingido");
         }
 
-        // 2. Calcular o desconto por tipo (Substituído 'coupon' por 'cupon' e 'subtotal' corrigido)
+        // 2. Calcular o desconto por tipo
         BigDecimal discount = BigDecimal.ZERO;
-        if (coupon.type() == CouponType.PERTENTAGE) {
+
+        // CORREÇÃO: Alterado de PERTENTAGE (com R) para PERCENTAGE (com C) para bater com o seu Enum
+        if (coupon.type() == CouponType.PERCENTAGE) {
             // Cenário 1.3: Cupom de Porcentagem
             BigDecimal percentage = coupon.value().divide(BigDecimal.valueOf(100));
             discount = subtotal.multiply(percentage);
