@@ -9,4 +9,11 @@ public record Coupon(
         BigDecimal value,
         LocalDateTime expirationDate, // Data de expiração do cupom
         BigDecimal minValue // Valor mínimo do pedido para aplicar o cupom
-) {}
+) {
+    public static record CartItem(
+        BigDecimal price,
+        int quantity
+    )  {
+
+    }
+}
