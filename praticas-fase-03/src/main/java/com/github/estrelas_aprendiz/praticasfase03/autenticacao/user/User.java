@@ -1,4 +1,4 @@
-package com.github.estrelas_aprendiz.praticasfase03.Autenticacao;
+package com.github.estrelas_aprendiz.praticasfase03.autenticacao.user;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
