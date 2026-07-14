@@ -23,24 +23,24 @@ public class ProdutoService {
         try {
             cachedJson = cacheService.get(cacheKey);
         } catch (Exception e) {
-            log.warn("[WARN] Redis indisponível ao tentar buscar cache. Redirecionando requisição para o banco de dados. Erro: {}", e.getMessage());
+            log.warn("Redis indisponível ao tentar buscar cache. Redirecionando requisição para o banco de dados. Erro: {}", e.getMessage());
         }
 
         // CACHE HIT: O Redis tinha os dados
         if (cachedJson != null) {
             try {
-                System.out.println("CACHE HIT");
+                log.info("Cache HIT para a chave: {}", cacheKey);
                 return objectMapper.readValue(
                         cachedJson,
                         objectMapper.getTypeFactory().constructCollectionType(List.class, ProdutoResponse.class)
                 );
             } catch (Exception e) {
-                log.error("[ERROR] Erro ao desserializar JSON do cache. Buscando do banco de dados.", e);
+                log.error("Erro ao desserializar JSON do cache. Buscando do banco de dados.", e);
             }
         }
 
         // CACHE MISS: Busca as entidades do banco de dados
-        System.out.println("CACHE MISS");
+        log.info("Cache MISS para a chave: {}", cacheKey);
         List<Produto> produtos = produtoRepository.findAll();
 
         List<ProdutoResponse> produtoResponse = produtos.stream()
@@ -52,7 +52,7 @@ public class ProdutoService {
             String jsonToCache = objectMapper.writeValueAsString(produtoResponse);
             cacheService.set(cacheKey, jsonToCache);
         } catch (Exception e) {
-            log.warn("[WARN] Redis indisponível ao tentar salvar cache. O fluxo continuará normalmente. Erro: {}", e.getMessage());
+            log.warn("Redis indisponível ao tentar salvar cache. O fluxo continuará normalmente. Erro: {}", e.getMessage());
         }
 
         return produtoResponse;
