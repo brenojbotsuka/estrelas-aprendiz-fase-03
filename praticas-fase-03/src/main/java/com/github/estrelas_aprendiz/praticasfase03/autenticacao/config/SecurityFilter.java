@@ -1,7 +1,7 @@
 package com.github.estrelas_aprendiz.praticasfase03.autenticacao.config;
 
 import com.github.estrelas_aprendiz.praticasfase03.autenticacao.auth.TokenService;
-import com.github.estrelas_aprendiz.praticasfase03.autenticacao.user.UserRepository;
+import com.github.estrelas_aprendiz.praticasfase03.autenticacao.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,7 +20,7 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,8 +32,8 @@ public class SecurityFilter extends OncePerRequestFilter {
             String email = tokenService.validateTokenAndGetSubject(token);
 
             if (email != null) {
-                UserDetails user = userRepository.findByEmail(email)
-                        .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado para o token fornecido."));
+                UserDetails user = userService.buscarPorEmail(email);
+
 
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
