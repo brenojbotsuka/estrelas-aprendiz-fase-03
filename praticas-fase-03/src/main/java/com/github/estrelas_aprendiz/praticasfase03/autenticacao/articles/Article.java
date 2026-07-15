@@ -1,4 +1,4 @@
-package com.github.estrelas_aprendiz.praticasfase03.autenticacao.Articles;
+package com.github.estrelas_aprendiz.praticasfase03.autenticacao.articles;
 
 
 import com.github.estrelas_aprendiz.praticasfase03.autenticacao.user.User;

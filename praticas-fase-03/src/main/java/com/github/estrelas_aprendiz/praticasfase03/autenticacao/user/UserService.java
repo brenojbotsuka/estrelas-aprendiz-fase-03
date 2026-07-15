@@ -12,14 +12,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public User buscarPorEmail(String email) {
+    public User findByEmail (String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com o email: " + email));
         return user;
     }
 
     @Transactional
-    public UserResponseDTO criar(UserRequestDTO request) {
+    public UserResponseDTO createUser(UserRequestDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("E-mail já cadastrado");
         }
