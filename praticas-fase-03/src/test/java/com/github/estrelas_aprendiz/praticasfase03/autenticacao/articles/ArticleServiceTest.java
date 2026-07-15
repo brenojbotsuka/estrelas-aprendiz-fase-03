@@ -1,9 +1,5 @@
-package com.github.estrelas_aprendiz.praticasfase03.autenticacao.ArticleTest;
+package com.github.estrelas_aprendiz.praticasfase03.autenticacao.articles;
 
-import com.github.estrelas_aprendiz.praticasfase03.autenticacao.Articles.Article;
-import com.github.estrelas_aprendiz.praticasfase03.autenticacao.Articles.ArticleRepository;
-import com.github.estrelas_aprendiz.praticasfase03.autenticacao.Articles.ArticleRequestDTO;
-import com.github.estrelas_aprendiz.praticasfase03.autenticacao.Articles.ArticleService;
 import com.github.estrelas_aprendiz.praticasfase03.autenticacao.user.Role;
 import com.github.estrelas_aprendiz.praticasfase03.autenticacao.user.User;
 import org.junit.jupiter.api.AfterEach;
@@ -67,22 +63,21 @@ public class ArticleServiceTest {
             return arg;
         });
 
-        Article savedArticle = articleService.createArticle(dto);
+        ArticleResponseDTO savedArticleDto = articleService.createArticle(dto);
 
-        assertNotNull(savedArticle);
-        assertEquals(1L, savedArticle.getId());
-        assertEquals("Título de Teste", savedArticle.getTitle());
-        assertEquals("Conteúdo do artigo...", savedArticle.getContent());
+        // Asserções no DTO de resposta
+        assertNotNull(savedArticleDto);
+        assertEquals(1L, savedArticleDto.getId());
+        assertEquals("Título de Teste", savedArticleDto.getTitle());
+        assertEquals("Conteúdo do artigo...", savedArticleDto.getContent());
+        assertEquals("autor@email.com", savedArticleDto.getAuthor()); // Valida o e-mail que o DTO carrega
 
-        assertNotNull(savedArticle.getAuthor());
-        assertEquals(99L, savedArticle.getAuthor().getId());
-        assertEquals("autor@email.com", savedArticle.getAuthor().getEmail());
-
+        // Captura o Article salvo para garantir que a entidade foi montada corretamente nos bastidores
         ArgumentCaptor<Article> articleCaptor = ArgumentCaptor.forClass(Article.class);
         verify(articleRepository, times(1)).save(articleCaptor.capture());
 
         Article capturedArticle = articleCaptor.getValue();
         assertEquals(99L, capturedArticle.getAuthor().getId());
+        assertEquals("autor@email.com", capturedArticle.getAuthor().getEmail());
     }
-
 }
