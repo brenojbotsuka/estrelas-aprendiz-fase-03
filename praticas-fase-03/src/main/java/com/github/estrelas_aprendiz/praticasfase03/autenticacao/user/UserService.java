@@ -11,33 +11,33 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(readOnly = true)
+    public User buscarPorEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com o email: " + email));
+        return user;
+    }
+
     @Transactional
     public UserResponseDTO criar(UserRequestDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("E-mail já cadastrado");
         }
 
-        if (request.getPassword() == null || request.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Senha inválida. Deve ter pelo menos 8 caracteres.");
-        }
-
         // Criação e população da entidade
         User user = new User();
         user.setEmail(request.getEmail());
         user.setRole(request.getRole());
-
-        String senhaCriptografada = passwordEncoder.encode(request.getPassword());
-        user.setPassword(senhaCriptografada);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User userSalvo = userRepository.save(user);
 
-        // Retornar o DTO (sem expor a senha por segurança)
         return new UserResponseDTO(
                 userSalvo.getEmail(),
-                userSalvo.getPassword(),
                 userSalvo.getRole(),
                 userSalvo.getId()
         );
     }
 }
+
 
