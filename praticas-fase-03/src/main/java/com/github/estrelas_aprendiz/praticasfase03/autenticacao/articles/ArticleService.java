@@ -2,10 +2,13 @@ package com.github.estrelas_aprendiz.praticasfase03.autenticacao.articles;
 
 import com.github.estrelas_aprendiz.praticasfase03.autenticacao.user.User;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.AssertionFailure;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.ObjectError;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,10 +54,20 @@ public class ArticleService {
     }
 
     @Transactional
-    public void deleteArticle(Long id) {
-        if (!articleRepository.existsById(id)) {
-            throw new IllegalArgumentException("Artigo não encontrado");
+    public void deleteArticle(Long id) throws AccessDeniedException {
+      Article article = articleRepository.findById(id)
+              .orElseThrow(() -> new ResourceNotFoundException("Artigo com id "+ id + "não encontrado."));
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(!(principal instanceof User)){
+            throw new AccessDeniedException("Usuário não autenticado.");
         }
-        articleRepository.deleteById(id);
+        User correntUser = (User) principal;
+
+        if (!(correntUser.getId().equals(article.getAuthor().getId()))){
+            throw new AccessDeniedException("Você não tem permição para deletar o artigo de outro autor.");
+        }
+        articleRepository.delete(article);
+
     }
 }
